@@ -396,12 +396,12 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, type: "spring", damping: 20 }}
-        className="relative w-full max-w-4xl aspect-video"
+        className="relative w-full max-w-4xl flex flex-col items-center"
       >
         {/* 게임 UI (게임 중일 때만) - 캔버스 위쪽에 배치 */}
         <AnimatePresence>
           {(gameState === "playing" || gameState === "paused") && (
-            <div className="absolute top-4 left-4 right-4 z-10">
+            <div className="mb-6 w-full">
               <GameUI
                 stats={stats}
                 gameState={gameState}
@@ -413,7 +413,9 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
         </AnimatePresence>
 
         {/* 게임 캔버스 */}
-        <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
+        <div className="w-full aspect-video">
+          <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
+        </div>
 
         {/* 시작 화면 */}
         <AnimatePresence>

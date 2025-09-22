@@ -121,7 +121,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-6xl font-bold text-white mb-4"
           >
-            🎮 미니게임 컬렉션
+            미니게임 컬렉션
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: -20 }}

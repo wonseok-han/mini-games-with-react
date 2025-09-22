@@ -5,6 +5,7 @@ import GameMenu from "./components/menu/GameMenu";
 import DodgeBulletsGame from "./games/DodgeBulletsGame";
 import SnakeGame from "./games/SnakeGame";
 import TetrisGame from "./games/TetrisGame";
+import BreakoutGame from "./games/BreakoutGame";
 
 /**
  * 메인 App 컴포넌트
@@ -55,20 +56,7 @@ function App() {
           </div>
         );
       case "breakout":
-        return (
-          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-900 to-slate-900 flex items-center justify-center">
-            <div className="text-center text-white">
-              <h1 className="text-4xl font-bold mb-4">💥 Breakout</h1>
-              <p className="text-xl mb-8">곧 출시 예정입니다!</p>
-              <button
-                onClick={handleBackToMenu}
-                className="glass rounded-xl px-8 py-3 text-white hover:bg-white/10 transition-all duration-300"
-              >
-                메뉴로 돌아가기
-              </button>
-            </div>
-          </div>
-        );
+        return <BreakoutGame onBackToMenu={handleBackToMenu} />;
       default:
         return null;
     }

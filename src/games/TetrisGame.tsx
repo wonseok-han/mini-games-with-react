@@ -597,8 +597,8 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onBackToMenu }) => {
         </AnimatePresence>
 
         {/* 게임 캔버스 */}
-        <div className="mb-4">
-          <GameCanvas canvasRef={canvasRef} className="block mx-auto" />
+        <div className="w-full aspect-video">
+          <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
         </div>
 
         {/* 시작 화면 */}

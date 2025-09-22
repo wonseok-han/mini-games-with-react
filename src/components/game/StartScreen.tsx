@@ -74,6 +74,28 @@ const StartScreen: React.FC<StartScreenProps> = ({
           controlsIcon: Gamepad2,
           scoringIcon: Zap,
         };
+      case "breakout":
+        return {
+          title: "Breakout",
+          description: "Break all the bricks with your paddle and ball!",
+          objective:
+            "Use the paddle to bounce the ball and break all the colored bricks. Don't let the ball fall!",
+          controls: [
+            {
+              icon: [ArrowLeft, ArrowRight],
+              text: "Arrow Keys",
+            },
+            {
+              icon: [Space],
+              text: "SPACE to launch ball",
+            },
+          ],
+          scoring:
+            "Break bricks to score points. Higher rows give more points. Complete all bricks to advance to the next level.",
+          objectiveIcon: Target,
+          controlsIcon: Gamepad2,
+          scoringIcon: Zap,
+        };
       default:
         return {
           title: "Game",

@@ -1,182 +1,193 @@
-# 🎮 Dodge Bullets - Modern Arcade Game
+# 🎮 미니게임 컬렉션 - React 아케이드
 
-![Game Preview](https://via.placeholder.com/800x600/1e293b/3b82f6?text=Dodge+Bullets)
+![게임 미리보기](https://via.placeholder.com/800x600/1e293b/3b82f6?text=Mini+Games+Collection)
 
-A modern, minimalist bullet-dodging arcade game built with **React**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**. Features smooth animations, responsive design, and an intuitive user interface.
+**React**, **TypeScript**, **Tailwind CSS**, **Framer Motion**으로 구축된 클래식 아케이드 게임 컬렉션입니다. 부드러운 애니메이션, 반응형 디자인, 직관적인 게임 메뉴 시스템을 특징으로 합니다.
 
-## ✨ Features
+## ✨ 제공되는 게임들
 
-### 🎯 **Modern Gameplay**
-- **Smooth Controls**: Arrow keys or mouse drag for precise movement
-- **Dynamic Difficulty**: Game speed increases every 100 points
-- **Real-time Scoring**: Live score tracking with high score persistence
-- **Pause System**: Spacebar or UI button to pause/resume
+### 🎯 **Dodge Bullets (총알 피하기)**
+- **목표**: 컬러풀한 총알들을 피하며 최대한 오래 살아남기
+- **조작법**: 방향키 또는 마우스 드래그로 이동
+- **특징**: 동적 난이도, 파티클 효과, 궤적 애니메이션
+- **점수**: 생존 시간당 1점
 
-### 🎨 **Premium Visual Design**
-- **Glassmorphism UI**: Modern frosted glass effects throughout
-- **Smooth Animations**: Framer Motion powered transitions
-- **Gradient Backgrounds**: Beautiful color gradients and effects
-- **Particle Effects**: Explosion and trail effects for enhanced gameplay
-- **Responsive Design**: Optimized for desktop, tablet, and mobile
+### 🐍 **Snake (스네이크)**
+- **목표**: 음식을 먹어 뱀을 길게 만들고 점수 올리기
+- **조작법**: 방향키로 이동, SPACE를 길게 눌러서 가속
+- **특징**: 가속 시스템, 뱀 성장 메커니즘
+- **점수**: 음식마다 점수, 100점마다 속도 증가
 
-### 🛠️ **Technical Excellence**
-- **React 18**: Latest React with hooks and functional components
-- **TypeScript**: Full type safety and better development experience
-- **Tailwind CSS**: Utility-first CSS framework for rapid styling
-- **Framer Motion**: Production-ready motion library for animations
-- **Lucide Icons**: Beautiful, customizable SVG icons
-- **Canvas API**: High-performance 2D rendering
+### 🧩 **Tetris (테트리스)**
+- **목표**: 떨어지는 블록으로 줄을 채워서 라인 클리어하기
+- **조작법**: 방향키로 이동/회전, SPACE로 즉시 떨어뜨리기
+- **특징**: 클래식 테트리스 메커니즘, 라인 클리어, 레벨 진행
+- **점수**: 라인 클리어당 점수, 높은 레벨일수록 더 많은 점수
 
-## 🚀 Quick Start
+### 🏓 **Breakout (브레이크아웃)**
+- **목표**: 패들과 공을 사용해서 모든 벽돌 깨기
+- **조작법**: 방향키로 패들 이동, SPACE로 공 발사
+- **특징**: 공 물리학, 벽돌 깨기, 레벨 진행
+- **점수**: 깨뜨린 벽돌마다 점수, 위쪽 줄일수록 더 많은 점수
 
-### Prerequisites
+## 🚀 빠른 시작
+
+### 사전 요구사항
 - Node.js 16+ 
-- npm or yarn
+- npm 또는 yarn
 
-### Installation
+### 설치
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd dodge-bullets
-
-# Install dependencies
+# 의존성 설치
 npm install
 
-# Start development server
+# 개발 서버 시작
 npm start
 ```
 
-The game will open at `http://localhost:3000`
+게임이 `http://localhost:3000`에서 열립니다.
 
-### Build for Production
+## 🎮 게임 방법
 
-```bash
-# Create production build
-npm run build
+### **게임 메뉴**
+1. **게임 선택**: 게임 카드를 클릭하여 플레이 시작
+2. **게임 정보**: 각 게임의 난이도, 조작법, 점수 정보 표시
+3. **최고 점수**: 각 게임의 최고 점수 확인
 
-# Serve the build locally
-npx serve -s build
-```
+### **공통 조작법**
+- **ESC**: 모든 게임 일시정지/재개
+- **게임별 조작법**: 개별 게임 설명 참조
 
-## 🎮 How to Play
+### **게임 플로우**
+1. **시작 화면**: 게임 설명과 시작 버튼
+2. **게임플레이**: 게임별 조작법으로 플레이
+3. **일시정지**: ESC 키 또는 UI 버튼 사용
+4. **게임 오버**: 점수 확인 및 재시작 옵션
+5. **메뉴로 돌아가기**: 게임 선택으로 돌아가기
 
-1. **Start**: Click "Start Game" or press any key
-2. **Move**: Use arrow keys or drag with mouse
-3. **Survive**: Dodge the colorful bullets coming from all directions
-4. **Score**: Points increase over time - survive longer for higher scores
-5. **Pause**: Press SPACEBAR or click the pause button
-6. **Restart**: Click "Play Again" after game over
+## 🎯 게임 메커니즘
 
-## 🎯 Game Mechanics
+### **Dodge Bullets (총알 피하기)**
+- **이동**: 부드러운 방향키 또는 마우스 조작
+- **난이도**: 100점마다 속도 증가
+- **비주얼**: 파티클 효과와 궤적 애니메이션
+- **점수**: 생존 시간당 1점
 
-### **Scoring System**
-- **1 point per second** of survival
-- **Speed increase** every 100 points
-- **Level progression** based on game speed
-- **High score** automatically saved to localStorage
+### **Snake (스네이크)**
+- **이동**: 방향키로 방향 조절
+- **가속**: SPACE를 길게 눌러서 2배 속도
+- **성장**: 음식을 먹을 때마다 뱀 길이 증가
+- **점수**: 음식당 점수, 100점마다 속도 증가
 
-### **Difficulty Progression**
-- **Level 1-5**: Slow bullets, easy patterns
-- **Level 6-10**: Faster bullets, more complex patterns  
-- **Level 10+**: Maximum difficulty with rapid bullet spawns
+### **Tetris (테트리스)**
+- **블록**: 7가지 다른 테트리스 블록
+- **회전**: 방향키로 블록 회전
+- **라인 클리어**: 완성된 줄이 사라지며 점수 획득
+- **점수**: 여러 줄 동시 클리어 시 더 많은 점수
 
-### **Visual Effects**
-- **Player Trail**: Moving trail effect behind the player
-- **Pulse Animation**: Player character pulses with life
-- **Particle Explosions**: Collision effects with particles
-- **Glow Effects**: Neon-style glowing elements
+### **Breakout (브레이크아웃)**
+- **패들**: 방향키로 좌우 이동
+- **공 발사**: SPACE로 공 발사
+- **물리학**: 현실적인 공 튕김 메커니즘
+- **점수**: 깨뜨린 벽돌마다 점수
 
-## 🛠️ Technical Architecture
+## 🛠️ 기술적 아키텍처
 
-### **Component Structure**
+### **프로젝트 구조**
 ```
 src/
 ├── components/
 │   ├── game/
-│   │   ├── GameCanvas.tsx      # Canvas rendering component
-│   │   ├── GameUI.tsx          # In-game UI overlay
-│   │   ├── StartScreen.tsx     # Main menu screen
-│   │   ├── PauseScreen.tsx     # Pause menu screen
-│   │   └── GameOverScreen.tsx  # Game over screen
+│   │   ├── GameCanvas.tsx      # 캔버스 렌더링 컴포넌트
+│   │   ├── GameUI.tsx          # 인게임 UI 오버레이
+│   │   ├── StartScreen.tsx     # 게임 시작 화면
+│   │   ├── PauseScreen.tsx     # 일시정지 메뉴 화면
+│   │   └── GameOverScreen.tsx  # 게임 오버 화면
+│   ├── menu/
+│   │   └── GameMenu.tsx        # 메인 게임 선택 메뉴
 │   └── ui/
-│       ├── Button.tsx          # Reusable button component
-│       ├── StatCard.tsx        # Statistics display card
-│       └── Modal.tsx           # Modal dialog component
+│       ├── Button.tsx          # 재사용 가능한 버튼 컴포넌트
+│       ├── StatCard.tsx        # 통계 표시 카드
+│       └── Modal.tsx           # 모달 다이얼로그 컴포넌트
+├── games/
+│   ├── DodgeBulletsGame.tsx    # Dodge Bullets 게임 로직
+│   ├── SnakeGame.tsx           # Snake 게임 로직
+│   ├── TetrisGame.tsx          # Tetris 게임 로직
+│   └── BreakoutGame.tsx        # Breakout 게임 로직
 ├── hooks/
-│   └── useGameEngine.ts        # Main game logic hook
+│   └── useGameEngine.ts        # Dodge Bullets 게임 엔진
 ├── types/
-│   └── game.ts                 # TypeScript type definitions
-└── App.tsx                     # Main application component
+│   └── game.ts                 # TypeScript 타입 정의
+└── App.tsx                     # 메인 애플리케이션 컴포넌트
 ```
 
-### **Game Engine Features**
-- **60 FPS Rendering**: Smooth canvas-based rendering
-- **Collision Detection**: Precise circular collision system
-- **Particle System**: Efficient particle management
-- **State Management**: React hooks for game state
-- **Event Handling**: Keyboard, mouse, and touch support
-- **Responsive Canvas**: Automatic canvas resizing
+## 🎨 디자인 시스템
 
-## 🎨 Design System
+### **색상 팔레트**
+- **주 색상**: 파란색 그라데이션 (`#3b82f6` to `#8b5cf6`)
+- **보조 색상**: 보라색 그라데이션 (`#8b5cf6` to `#ec4899`)
+- **강조 색상**: 빨간색 그라데이션 (`#ef4444` to `#f97316`)
+- **배경**: 어두운 슬레이트 그라데이션 (`#0f172a` to `#1e293b`)
+- **게임별**: 각 게임마다 고유한 색상 테마
 
-### **Color Palette**
-- **Primary**: Blue gradient (`#3b82f6` to `#8b5cf6`)
-- **Secondary**: Purple gradient (`#8b5cf6` to `#ec4899`)
-- **Accent**: Red gradient (`#ef4444` to `#f97316`)
-- **Background**: Dark slate gradient (`#0f172a` to `#1e293b`)
+### **타이포그래피**
+- **디스플레이 폰트**: Poppins (제목)
+- **본문 폰트**: Inter (본문 텍스트)
+- **굵기**: 300, 400, 500, 600, 700
 
-### **Typography**
-- **Display Font**: Poppins (headings)
-- **Body Font**: Inter (body text)
-- **Weights**: 300, 400, 500, 600, 700
+### **애니메이션 원칙**
+- **이징**: 자연스러운 느낌을 위한 스프링 기반 애니메이션
+- **지속 시간**: 마이크로 인터랙션 0.3초, 전환 0.6초
+- **지연**: 시각적 계층을 위한 순차적 애니메이션
+- **호버 상태**: 인터랙티브 요소의 스케일 및 글로우 효과
 
-### **Animation Principles**
-- **Easing**: Spring-based animations for natural feel
-- **Duration**: 0.3s for micro-interactions, 0.6s for transitions
-- **Stagger**: Sequential animations for visual hierarchy
-- **Hover States**: Scale and glow effects on interactive elements
+## 📱 반응형 디자인
 
-## 📱 Responsive Design
+### **브레이크포인트**
+- **모바일**: < 640px (sm)
+- **태블릿**: 640px - 1024px (md-lg)
+- **데스크톱**: > 1024px (xl+)
 
-### **Breakpoints**
-- **Mobile**: < 640px (sm)
-- **Tablet**: 640px - 1024px (md-lg)
-- **Desktop**: > 1024px (xl+)
+### **모바일 최적화**
+- **터치 조작**: Dodge Bullets에서 드래그로 이동
+- **반응형 UI**: 스케일된 인터페이스 요소
+- **성능**: 모바일 기기를 위한 최적화된 렌더링
+- **접근성**: 적절한 터치 타겟과 대비
 
-### **Mobile Optimizations**
-- **Touch Controls**: Drag to move player
-- **Responsive UI**: Scaled interface elements
-- **Performance**: Optimized rendering for mobile devices
-- **Accessibility**: Proper touch targets and contrast
+## 🔧 커스터마이징
 
-## 🔧 Customization
-
-### **Game Settings**
-Modify game parameters in `src/hooks/useGameEngine.ts`:
+### **게임 설정**
+각 게임은 해당 파일에서 매개변수를 수정하여 커스터마이징할 수 있습니다:
 
 ```typescript
-// Bullet spawn rate (higher = more bullets)
+// Dodge Bullets - src/hooks/useGameEngine.ts
 const bulletSpawnRate = 0.02;
-
-// Bullet speed multiplier
 const bulletSpeed = 2;
-
-// Player movement speed
 const playerSpeed = 5;
 
-// Trail length
-const maxTrailLength = 8;
+// Snake - src/games/SnakeGame.tsx
+const INITIAL_SPEED = 200;
+const SPEED_INCREMENT = 10;
+
+// Tetris - src/games/TetrisGame.tsx
+const BOARD_WIDTH = 10;
+const BOARD_HEIGHT = 20;
+const CELL_SIZE = 30;
+
+// Breakout - src/games/BreakoutGame.tsx
+const INITIAL_BALL_SPEED = 5;
+const PADDLE_SPEED = 6;
 ```
 
-### **Visual Customization**
-Update colors and animations in `tailwind.config.js`:
+### **비주얼 커스터마이징**
+`tailwind.config.js`에서 색상과 애니메이션을 업데이트:
 
 ```javascript
 theme: {
   extend: {
     colors: {
-      primary: { /* Custom color palette */ },
+      primary: { /* 커스텀 색상 팔레트 */ },
     },
     animation: {
       'custom-animation': 'custom-keyframes 2s infinite',
@@ -185,44 +196,56 @@ theme: {
 }
 ```
 
-## 🚀 Performance Optimizations
+## 🚀 성능 최적화
 
-- **Canvas Optimization**: Efficient rendering with requestAnimationFrame
-- **Memory Management**: Automatic cleanup of particles and bullets
-- **Event Debouncing**: Optimized input handling
-- **Bundle Splitting**: Code splitting for faster loading
-- **Image Optimization**: Optimized assets and lazy loading
+- **캔버스 최적화**: requestAnimationFrame을 사용한 효율적인 렌더링
+- **메모리 관리**: 게임 객체의 자동 정리
+- **이벤트 디바운싱**: 최적화된 입력 처리
+- **번들 분할**: 더 빠른 로딩을 위한 코드 분할
+- **게임별 최적화**: 각 게임의 메커니즘에 맞는 최적화
 
-## 🐛 Troubleshooting
+## 🐛 문제 해결
 
-### **Common Issues**
+### **일반적인 문제들**
 
-1. **Game not starting**: Check browser console for errors
-2. **Poor performance**: Reduce particle count or disable effects
-3. **Touch not working**: Ensure proper touch event handling
-4. **Canvas not rendering**: Check canvas ref and context
+1. **게임이 시작되지 않음**: 브라우저 콘솔에서 오류 확인
+2. **성능 저하**: 파티클 수를 줄이거나 효과 비활성화
+3. **터치가 작동하지 않음**: 적절한 터치 이벤트 처리 확인
+4. **캔버스가 렌더링되지 않음**: 캔버스 ref와 컨텍스트 확인
+5. **조작이 반응하지 않음**: 키보드 이벤트 리스너 확인
 
-### **Browser Support**
+### **브라우저 지원**
 - **Chrome**: 90+
 - **Firefox**: 88+
 - **Safari**: 14+
 - **Edge**: 90+
 
-## 📄 License
+## 🎯 게임별 특별 기능
 
-MIT License - feel free to use this project for learning or commercial purposes.
+### **Dodge Bullets (총알 피하기)**
+- 파티클 폭발 효과
+- 플레이어 궤적 애니메이션
+- 동적 총알 패턴
+- 속도 기반 난이도 조절
 
-## 🤝 Contributing
+### **Snake (스네이크)**
+- 가속 시스템 (SPACE 키)
+- 뱀 성장 메커니즘
+- 음식 생성 알고리즘
+- 자기 자신과의 충돌 감지
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### **Tetris (테트리스)**
+- 7가지 다른 블록 타입
+- 라인 클리어 메커니즘
+- 레벨 진행 시스템
+- 블록 회전 및 이동
 
-## 🙏 Acknowledgments
-
-- **Framer Motion** for smooth animations
-- **Lucide** for beautiful icons
-- **Tailwind CSS** for rapid styling
-- **React** for the component architecture
+### **Breakout (브레이크아웃)**
+- 공 물리학 시뮬레이션
+- 패들 충돌 감지
+- 벽돌 깨기 메커니즘
+- 새로운 벽돌 패턴이 있는 레벨 진행
 
 ---
 
-**Enjoy the game! 🎮✨**
+**게임을 즐기세요! 🎮✨**

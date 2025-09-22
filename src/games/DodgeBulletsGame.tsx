@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameEngine } from "../hooks/useGameEngine";
+import { useSound } from "../hooks/useSound";
 import GameCanvas from "../components/game/GameCanvas";
 import GameUI from "../components/game/GameUI";
 import StartScreen from "../components/game/StartScreen";
@@ -20,6 +21,7 @@ const DodgeBulletsGame: React.FC<DodgeBulletsGameProps> = ({
 }) => {
   const { canvasRef, gameState, stats, startGame, restartGame, togglePause } =
     useGameEngine();
+  const { playSound } = useSound();
 
   const [isNewHighScore, setIsNewHighScore] = useState(false);
 
@@ -30,20 +32,31 @@ const DodgeBulletsGame: React.FC<DodgeBulletsGameProps> = ({
     }
   }, [gameState, stats.score, stats.highScore]);
 
+  // 게임 상태 변화에 따른 효과음
+  useEffect(() => {
+    if (gameState === "gameOver") {
+      playSound("gameOver");
+    }
+  }, [gameState, playSound]);
+
   const handleStart = () => {
+    playSound("button");
     startGame();
   };
 
   const handleRestart = () => {
+    playSound("button");
     restartGame();
     setIsNewHighScore(false);
   };
 
   const handlePause = () => {
+    playSound("pause");
     togglePause();
   };
 
   const handleResume = () => {
+    playSound("resume");
     togglePause();
   };
 

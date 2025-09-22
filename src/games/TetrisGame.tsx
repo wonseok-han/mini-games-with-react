@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSound } from "../hooks/useSound";
 import { GameState, GameStats } from "../types/game";
 import GameCanvas from "../components/game/GameCanvas";
 import GameUI from "../components/game/GameUI";
@@ -28,6 +29,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onBackToMenu }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
+  const { playSound } = useSound();
 
   const [gameState, setGameState] = useState<GameState>("playing");
   const [stats, setStats] = useState<GameStats>({
@@ -207,23 +209,27 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onBackToMenu }) => {
   }, []);
 
   // 점수 업데이트
-  const updateScore = useCallback((linesCleared: number) => {
-    if (linesCleared > 0) {
-      setStats((prev) => {
-        const lineScores = [0, 40, 100, 300, 1200]; // 1, 2, 3, 4줄 제거 점수
-        const newScore = prev.score + lineScores[linesCleared] * prev.level;
-        const newLevel = Math.floor(newScore / 1000) + 1;
-        const newGameSpeed = Math.max(0.1, 1 - (newLevel - 1) * 0.1);
+  const updateScore = useCallback(
+    (linesCleared: number) => {
+      if (linesCleared > 0) {
+        playSound("lineClear");
+        setStats((prev) => {
+          const lineScores = [0, 40, 100, 300, 1200]; // 1, 2, 3, 4줄 제거 점수
+          const newScore = prev.score + lineScores[linesCleared] * prev.level;
+          const newLevel = Math.floor(newScore / 1000) + 1;
+          const newGameSpeed = Math.max(0.1, 1 - (newLevel - 1) * 0.1);
 
-        return {
-          ...prev,
-          score: newScore,
-          level: newLevel,
-          gameSpeed: newGameSpeed,
-        };
-      });
-    }
-  }, []);
+          return {
+            ...prev,
+            score: newScore,
+            level: newLevel,
+            gameSpeed: newGameSpeed,
+          };
+        });
+      }
+    },
+    [playSound]
+  );
 
   // 새 피스 생성 및 게임 오버 체크
   const spawnNewPiece = useCallback(
@@ -233,6 +239,7 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onBackToMenu }) => {
 
       // 게임 오버 체크
       if (!isValidPosition(newCurrentPiece, clearedBoard)) {
+        playSound("gameOver");
         setGameState("gameOver");
         return;
       }
@@ -440,10 +447,11 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onBackToMenu }) => {
         y: currentPiece.y + dy,
       };
       if (isValidPosition(newPiece, board)) {
+        playSound("move");
         setCurrentPiece(newPiece);
       }
     },
-    [currentPiece, gameState, board, isValidPosition]
+    [currentPiece, gameState, board, isValidPosition, playSound]
   );
 
   // 피스 회전
@@ -452,9 +460,10 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onBackToMenu }) => {
 
     const rotatedPiece = rotatePiece(currentPiece);
     if (isValidPosition(rotatedPiece, board)) {
+      playSound("rotate");
       setCurrentPiece(rotatedPiece);
     }
-  }, [currentPiece, gameState, board, isValidPosition, rotatePiece]);
+  }, [currentPiece, gameState, board, isValidPosition, rotatePiece, playSound]);
 
   // 빠른 낙하
   const dropPiece = useCallback(() => {
@@ -545,18 +554,22 @@ const TetrisGame: React.FC<TetrisGameProps> = ({ onBackToMenu }) => {
   }, [gameLoop, resizeCanvas, currentPiece, createRandomPiece]);
 
   const handleStart = () => {
+    playSound("button");
     startGame();
   };
 
   const handleRestart = () => {
+    playSound("button");
     restartGame();
   };
 
   const handlePause = () => {
+    playSound("pause");
     togglePause();
   };
 
   const handleResume = () => {
+    playSound("resume");
     togglePause();
   };
 

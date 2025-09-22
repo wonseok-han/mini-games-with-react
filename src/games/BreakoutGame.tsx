@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSound } from "../hooks/useSound";
 import { GameState, GameStats } from "../types/game";
 import GameCanvas from "../components/game/GameCanvas";
 import GameUI from "../components/game/GameUI";
@@ -46,6 +47,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
+  const { playSound } = useSound();
 
   const [gameState, setGameState] = useState<GameState>("start");
   const [stats, setStats] = useState<GameStats>({
@@ -247,6 +249,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
 
       // 패들 충돌
       if (checkCollision(newBall, paddle)) {
+        playSound("paddleHit");
         const hitPos =
           (newBall.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
         newBall.velocityX = hitPos * newBall.speed;
@@ -256,6 +259,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
 
       // 바닥에 떨어짐 (게임 오버)
       if (newBall.y + newBall.radius >= CANVAS_HEIGHT) {
+        playSound("gameOver");
         setGameState("gameOver");
         setIsBallLaunched(false);
         setKeys({ left: false, right: false }); // 키 상태 초기화
@@ -288,6 +292,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
           };
 
           if (checkBrickCollision(tempBall, brick)) {
+            playSound("brickBreak");
             brick.destroyed = true;
             scoreIncrease += brick.points;
             ballHit = true;
@@ -446,6 +451,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
           break;
         case " ":
           if (!isBallLaunched) {
+            playSound("ballLaunch");
             setIsBallLaunched(true);
           }
           break;
@@ -517,18 +523,22 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
   }, [gameLoop, resizeCanvas]);
 
   const handleStart = () => {
+    playSound("button");
     startGame();
   };
 
   const handlePause = () => {
+    playSound("pause");
     togglePause();
   };
 
   const handleResume = () => {
+    playSound("resume");
     togglePause();
   };
 
   const handleRestart = () => {
+    playSound("button");
     restartGame();
   };
 

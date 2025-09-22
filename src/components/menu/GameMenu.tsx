@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
+import { useSound } from "../../hooks/useSound";
 import { GameInfo, GameType } from "../../types/game";
+import { Volume2, VolumeX } from "lucide-react";
 
 interface GameMenuProps {
   onSelectGame: (gameType: GameType) => void;
@@ -16,6 +18,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
   onBackToGame,
   showBackButton = false,
 }) => {
+  const { toggleMute, isMuted } = useSound();
   // 게임 목록 정의
   const games: GameInfo[] = [
     {
@@ -194,6 +197,26 @@ const GameMenu: React.FC<GameMenuProps> = ({
             </motion.div>
           ))}
         </div>
+
+        {/* 사운드 토글 버튼 */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="absolute top-4 right-4"
+        >
+          <button
+            onClick={() => toggleMute()}
+            className="glass rounded-xl p-3 text-white hover:bg-white/10 transition-all duration-300 flex items-center justify-center"
+            title={isMuted() ? "음소거 해제" : "음소거"}
+          >
+            {isMuted() ? (
+              <VolumeX className="w-6 h-6" />
+            ) : (
+              <Volume2 className="w-6 h-6" />
+            )}
+          </button>
+        </motion.div>
 
         {/* 뒤로가기 버튼 */}
         {showBackButton && onBackToGame && (

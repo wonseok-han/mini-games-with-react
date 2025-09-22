@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSound } from "../hooks/useSound";
 import { GameState, GameStats } from "../types/game";
 import GameCanvas from "../components/game/GameCanvas";
 import GameUI from "../components/game/GameUI";
@@ -34,6 +35,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
+  const { playSound } = useSound();
 
   const [gameState, setGameState] = useState<GameState>("start");
   const [stats, setStats] = useState<GameStats>({
@@ -54,6 +56,20 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
   // 게임 설정
   const GRID_SIZE = 20;
   const INITIAL_SPEED = 150; // 밀리초
+
+  // 새 최고점수 체크
+  useEffect(() => {
+    if (gameState === "gameOver" && stats.score > 0) {
+      setIsNewHighScore(stats.score > stats.highScore);
+    }
+  }, [gameState, stats.score, stats.highScore]);
+
+  // 게임 상태 변화에 따른 효과음
+  useEffect(() => {
+    if (gameState === "gameOver") {
+      playSound("gameOver");
+    }
+  }, [gameState, playSound]);
 
   // 캔버스 크기 조정
   const resizeCanvas = useCallback(() => {
@@ -123,6 +139,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
       const maxY = Math.floor(canvas.height / GRID_SIZE) - 1;
 
       if (head.x < 0 || head.x > maxX || head.y < 0 || head.y > maxY) {
+        playSound("hit");
         setGameState("gameOver");
         return prevSnake;
       }
@@ -131,6 +148,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
       if (
         newSnake.some((segment) => segment.x === head.x && segment.y === head.y)
       ) {
+        playSound("hit");
         setGameState("gameOver");
         return prevSnake;
       }
@@ -139,6 +157,8 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
 
       // 먹이 먹었는지 확인
       if (head.x === food.x && head.y === food.y) {
+        playSound("eat");
+
         // 점수 증가
         setStats((prev) => {
           const newScore = prev.score + 10;
@@ -289,6 +309,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
       if (e.code === "Space") {
         e.preventDefault();
         if (gameState === "playing") {
+          playSound("boost");
           setIsBoosting(true);
         }
         return;
@@ -361,18 +382,22 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
   }, [gameLoop, resizeCanvas]);
 
   const handleStart = () => {
+    playSound("button");
     startGame();
   };
 
   const handleRestart = () => {
+    playSound("button");
     restartGame();
   };
 
   const handlePause = () => {
+    playSound("pause");
     togglePause();
   };
 
   const handleResume = () => {
+    playSound("resume");
     togglePause();
   };
 

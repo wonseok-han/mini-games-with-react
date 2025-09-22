@@ -10,15 +10,81 @@ import {
   ArrowLeft,
   ArrowRight,
   MousePointer,
+  Apple,
+  Gamepad2,
 } from "lucide-react";
 import Button from "../ui/Button";
+import { GameType } from "../../types/game";
 
 interface StartScreenProps {
   onStart: () => void;
   highScore: number;
+  gameType?: GameType;
 }
 
-const StartScreen: React.FC<StartScreenProps> = ({ onStart, highScore }) => {
+const StartScreen: React.FC<StartScreenProps> = ({
+  onStart,
+  highScore,
+  gameType = "dodge-bullets",
+}) => {
+  // 게임별 정보 정의
+  const getGameInfo = (gameType: GameType) => {
+    switch (gameType) {
+      case "dodge-bullets":
+        return {
+          title: "Dodge Bullets",
+          description:
+            "Navigate through the chaos and survive as long as possible!",
+          objective:
+            "Dodge incoming bullets from all directions and survive as long as possible.",
+          controls: [
+            {
+              icon: [ArrowUp, ArrowDown, ArrowLeft, ArrowRight],
+              text: "Arrow Keys",
+            },
+            { icon: [MousePointer], text: "Mouse Drag" },
+          ],
+          scoring:
+            "Score increases over time. Every 100 points increases game speed and difficulty.",
+          objectiveIcon: Target,
+          controlsIcon: MousePointer,
+          scoringIcon: Zap,
+        };
+      case "snake":
+        return {
+          title: "Snake",
+          description:
+            "Control the snake, eat food, and grow as long as possible!",
+          objective:
+            "Guide the snake to eat red food and grow longer. Avoid hitting walls or yourself.",
+          controls: [
+            {
+              icon: [ArrowUp, ArrowDown, ArrowLeft, ArrowRight],
+              text: "Arrow Keys",
+            },
+          ],
+          scoring:
+            "Eat food to increase score. Every 10 points increases your length. Speed increases every 100 points.",
+          objectiveIcon: Apple,
+          controlsIcon: Gamepad2,
+          scoringIcon: Zap,
+        };
+      default:
+        return {
+          title: "Game",
+          description: "Enjoy the game!",
+          objective: "Have fun and try to get a high score.",
+          controls: [{ icon: [Gamepad2], text: "Game Controls" }],
+          scoring: "Score points to achieve a high score.",
+          objectiveIcon: Target,
+          controlsIcon: Gamepad2,
+          scoringIcon: Zap,
+        };
+    }
+  };
+
+  const gameInfo = getGameInfo(gameType);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -40,7 +106,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, highScore }) => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-6xl font-bold gradient-text mb-4 font-display"
         >
-          Dodge Bullets
+          {gameInfo.title}
         </motion.h1>
 
         <motion.p
@@ -49,7 +115,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, highScore }) => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-xl text-white/80 mb-8"
         >
-          Navigate through the chaos and survive as long as possible!
+          {gameInfo.description}
         </motion.p>
 
         {/* 게임 정보 카드들 */}
@@ -61,46 +127,37 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, highScore }) => {
         >
           <div className="glass rounded-2xl p-6 text-left">
             <div className="flex items-center gap-3 mb-3">
-              <Target className="text-blue-400" size={24} />
+              <gameInfo.objectiveIcon className="text-blue-400" size={24} />
               <h3 className="text-lg font-semibold text-white">Objective</h3>
             </div>
-            <p className="text-white/70 text-sm">
-              Dodge incoming bullets from all directions and survive as long as
-              possible.
-            </p>
+            <p className="text-white/70 text-sm">{gameInfo.objective}</p>
           </div>
 
           <div className="glass rounded-2xl p-6 text-left">
             <div className="flex items-center gap-3 mb-3">
-              <MousePointer className="text-green-400" size={24} />
+              <gameInfo.controlsIcon className="text-green-400" size={24} />
               <h3 className="text-lg font-semibold text-white">Controls</h3>
             </div>
             <div className="space-y-2 text-sm text-white/70">
-              <div className="flex items-center gap-2">
-                <div className="flex gap-1">
-                  <ArrowUp size={16} />
-                  <ArrowDown size={16} />
-                  <ArrowLeft size={16} />
-                  <ArrowRight size={16} />
+              {gameInfo.controls.map((control) => (
+                <div key={control.text} className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    {control.icon.map((Icon) => (
+                      <Icon key={Icon.name} size={16} />
+                    ))}
+                  </div>
+                  <span>{control.text}</span>
                 </div>
-                <span>Arrow Keys</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MousePointer size={16} />
-                <span>Mouse Drag</span>
-              </div>
+              ))}
             </div>
           </div>
 
           <div className="glass rounded-2xl p-6 text-left">
             <div className="flex items-center gap-3 mb-3">
-              <Zap className="text-yellow-400" size={24} />
+              <gameInfo.scoringIcon className="text-yellow-400" size={24} />
               <h3 className="text-lg font-semibold text-white">Scoring</h3>
             </div>
-            <p className="text-white/70 text-sm">
-              Score increases over time. Every 100 points increases game speed
-              and difficulty.
-            </p>
+            <p className="text-white/70 text-sm">{gameInfo.scoring}</p>
           </div>
         </motion.div>
 
@@ -148,7 +205,10 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, highScore }) => {
           transition={{ duration: 0.8, delay: 1.2 }}
           className="text-sm text-white/50 mt-6"
         >
-          Press SPACEBAR to pause during gameplay
+          Press{" "}
+          <kbd className="px-2 py-1 bg-white/10 rounded text-xs">SPACE</kbd> or{" "}
+          <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd> to
+          pause during gameplay
         </motion.p>
       </motion.div>
     </motion.div>

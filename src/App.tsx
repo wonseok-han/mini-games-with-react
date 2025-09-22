@@ -1,137 +1,116 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGameEngine } from "./hooks/useGameEngine";
-import GameCanvas from "./components/game/GameCanvas";
-import GameUI from "./components/game/GameUI";
-import StartScreen from "./components/game/StartScreen";
-import PauseScreen from "./components/game/PauseScreen";
-import GameOverScreen from "./components/game/GameOverScreen";
+import { GameType } from "./types/game";
+import GameMenu from "./components/menu/GameMenu";
+import DodgeBulletsGame from "./games/DodgeBulletsGame";
+import SnakeGame from "./games/SnakeGame";
 
+/**
+ * 메인 App 컴포넌트
+ * 게임 메뉴와 선택된 게임 간의 전환을 관리합니다.
+ */
 function App() {
-  const { canvasRef, gameState, stats, startGame, restartGame, togglePause } =
-    useGameEngine();
+  const [currentGame, setCurrentGame] = useState<GameType | null>(null);
 
-  const [isNewHighScore, setIsNewHighScore] = useState(false);
+  /**
+   * 게임 선택 핸들러
+   * @param gameType 선택된 게임 타입
+   */
+  const handleSelectGame = (gameType: GameType) => {
+    setCurrentGame(gameType);
+  };
 
-  // 새 최고점수 체크
-  useEffect(() => {
-    if (gameState === "gameOver" && stats.score > 0) {
-      setIsNewHighScore(stats.score > stats.highScore);
+  /**
+   * 메뉴로 돌아가기 핸들러
+   */
+  const handleBackToMenu = () => {
+    setCurrentGame(null);
+  };
+
+  /**
+   * 현재 게임 컴포넌트 렌더링
+   */
+  const renderCurrentGame = () => {
+    switch (currentGame) {
+      case "dodge-bullets":
+        return <DodgeBulletsGame onBackToMenu={handleBackToMenu} />;
+      case "snake":
+        return <SnakeGame onBackToMenu={handleBackToMenu} />;
+      case "tetris":
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h1 className="text-4xl font-bold mb-4">🧩 Tetris</h1>
+              <p className="text-xl mb-8">곧 출시 예정입니다!</p>
+              <button
+                onClick={handleBackToMenu}
+                className="glass rounded-xl px-8 py-3 text-white hover:bg-white/10 transition-all duration-300"
+              >
+                메뉴로 돌아가기
+              </button>
+            </div>
+          </div>
+        );
+      case "pong":
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h1 className="text-4xl font-bold mb-4">🏓 Pong</h1>
+              <p className="text-xl mb-8">곧 출시 예정입니다!</p>
+              <button
+                onClick={handleBackToMenu}
+                className="glass rounded-xl px-8 py-3 text-white hover:bg-white/10 transition-all duration-300"
+              >
+                메뉴로 돌아가기
+              </button>
+            </div>
+          </div>
+        );
+      case "breakout":
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-900 to-slate-900 flex items-center justify-center">
+            <div className="text-center text-white">
+              <h1 className="text-4xl font-bold mb-4">💥 Breakout</h1>
+              <p className="text-xl mb-8">곧 출시 예정입니다!</p>
+              <button
+                onClick={handleBackToMenu}
+                className="glass rounded-xl px-8 py-3 text-white hover:bg-white/10 transition-all duration-300"
+              >
+                메뉴로 돌아가기
+              </button>
+            </div>
+          </div>
+        );
+      default:
+        return null;
     }
-  }, [gameState, stats.score, stats.highScore]);
-
-  const handleStart = () => {
-    startGame();
-  };
-
-  const handleRestart = () => {
-    restartGame();
-    setIsNewHighScore(false);
-  };
-
-  const handlePause = () => {
-    togglePause();
-  };
-
-  const handleResume = () => {
-    togglePause();
-  };
-
-  const handleHome = () => {
-    // 게임 상태를 start로 리셋
-    window.location.reload();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      {/* 배경 효과 */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float" />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "2s" }}
-        />
-        <div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "4s" }}
-        />
-      </div>
-
-      {/* 메인 게임 컨테이너 */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, type: "spring", damping: 20 }}
-        className="relative w-full max-w-6xl aspect-video"
-      >
-        {/* 게임 캔버스 */}
-        <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
-
-        {/* 게임 UI (게임 중일 때만) */}
-        <AnimatePresence>
-          {(gameState === "playing" || gameState === "paused") && (
-            <GameUI
-              stats={stats}
-              gameState={gameState}
-              onPause={handlePause}
-              onResume={handleResume}
-            />
-          )}
-        </AnimatePresence>
-
-        {/* 시작 화면 */}
-        <AnimatePresence>
-          {gameState === "start" && (
-            <StartScreen onStart={handleStart} highScore={stats.highScore} />
-          )}
-        </AnimatePresence>
-
-        {/* 일시정지 화면 */}
-        <AnimatePresence>
-          {gameState === "paused" && (
-            <PauseScreen
-              onResume={handleResume}
-              onRestart={handleRestart}
-              onHome={handleHome}
-            />
-          )}
-        </AnimatePresence>
-
-        {/* 게임 오버 화면 */}
-        <AnimatePresence>
-          {gameState === "gameOver" && (
-            <GameOverScreen
-              score={stats.score}
-              highScore={stats.highScore}
-              isNewHighScore={isNewHighScore}
-              onRestart={handleRestart}
-              onHome={handleHome}
-            />
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* 하단 정보 */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.0 }}
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
-      >
-        <div className="glass rounded-2xl px-6 py-3 text-center">
-          <p className="text-white/70 text-sm">
-            Use{" "}
-            <kbd className="px-2 py-1 bg-white/10 rounded text-xs">SPACE</kbd>{" "}
-            to pause • Use{" "}
-            <kbd className="px-2 py-1 bg-white/10 rounded text-xs">
-              ARROW KEYS
-            </kbd>{" "}
-            or{" "}
-            <kbd className="px-2 py-1 bg-white/10 rounded text-xs">MOUSE</kbd>{" "}
-            to move
-          </p>
-        </div>
-      </motion.div>
+    <div className="min-h-screen">
+      <AnimatePresence mode="wait">
+        {currentGame ? (
+          <motion.div
+            key={currentGame}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.5 }}
+          >
+            {renderCurrentGame()}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="menu"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{ duration: 0.5 }}
+          >
+            <GameMenu onSelectGame={handleSelectGame} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

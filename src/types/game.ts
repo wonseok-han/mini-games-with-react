@@ -1,5 +1,24 @@
 export type GameState = "start" | "playing" | "paused" | "gameOver";
 
+// 게임 타입 정의
+export type GameType =
+  | "dodge-bullets"
+  | "snake"
+  | "tetris"
+  | "pong"
+  | "breakout";
+
+// 게임 정보 인터페이스
+export interface GameInfo {
+  id: GameType;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  difficulty: "easy" | "medium" | "hard";
+  controls: string[];
+}
+
 export interface Player {
   x: number;
   y: number;

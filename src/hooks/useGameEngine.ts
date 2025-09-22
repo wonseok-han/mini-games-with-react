@@ -607,7 +607,7 @@ export const useGameEngine = () => {
   // 키보드 이벤트 처리
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.code === "Space") {
+      if (e.code === "Space" || e.key === "Escape") {
         e.preventDefault();
         togglePause();
         return;

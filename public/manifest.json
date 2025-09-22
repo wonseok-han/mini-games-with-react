@@ -1,6 +1,6 @@
 {
-  "short_name": "Dodge Bullets",
-  "name": "Dodge Bullets - Modern Arcade Game",
+  "short_name": "미니게임 컬렉션",
+  "name": "🎮 미니게임 컬렉션 - React 아케이드",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#3b82f6",
   "background_color": "#0f172a"
 }

@@ -23,15 +23,15 @@ const GameUI: React.FC<GameUIProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -50 }}
+      initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.2 }}
-      className="absolute inset-0 z-10 p-6 pointer-events-none"
+      className="w-full"
     >
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-center">
         {/* 왼쪽: 점수 */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
+          initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
@@ -46,7 +46,7 @@ const GameUI: React.FC<GameUIProps> = ({
 
         {/* 중앙: 게임 통계 */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
           className="flex gap-3"
@@ -69,24 +69,24 @@ const GameUI: React.FC<GameUIProps> = ({
 
         {/* 오른쪽: 일시정지 버튼과 최고점수 */}
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex flex-col items-end gap-3"
+          className="flex items-center gap-3"
         >
-          <Button
-            onClick={gameState === "playing" ? onPause : onResume}
-            variant="secondary"
-            size="sm"
-            icon={gameState === "playing" ? Pause : Play}
-            className="pointer-events-auto w-12 h-12 p-0 rounded-full"
-          />
           <StatCard
             label="High Score"
             value={stats.highScore.toLocaleString()}
             icon={Trophy}
             color="blue"
             className="pointer-events-auto"
+          />
+          <Button
+            onClick={gameState === "playing" ? onPause : onResume}
+            variant="secondary"
+            size="sm"
+            icon={gameState === "playing" ? Pause : Play}
+            className="pointer-events-auto w-12 h-12 p-0 rounded-full"
           />
         </motion.div>
       </div>

@@ -25,7 +25,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
       icon: "🎯",
       color: "from-red-500 to-pink-500",
       difficulty: "medium",
-      controls: ["화살표 키 또는 마우스로 이동", "SPACE로 일시정지"],
+      controls: ["화살표 키 또는 마우스로 이동"],
     },
     {
       id: "snake",
@@ -34,7 +34,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
       icon: "🐍",
       color: "from-green-500 to-emerald-500",
       difficulty: "easy",
-      controls: ["화살표 키로 이동", "SPACE로 일시정지"],
+      controls: ["화살표 키로 이동", "SPACE로 가속"],
     },
     {
       id: "tetris",

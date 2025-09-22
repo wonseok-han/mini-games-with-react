@@ -12,6 +12,7 @@ import {
   MousePointer,
   Apple,
   Gamepad2,
+  Space,
 } from "lucide-react";
 import Button from "../ui/Button";
 import { GameType } from "../../types/game";
@@ -61,6 +62,10 @@ const StartScreen: React.FC<StartScreenProps> = ({
             {
               icon: [ArrowUp, ArrowDown, ArrowLeft, ArrowRight],
               text: "Arrow Keys",
+            },
+            {
+              icon: [Space],
+              text: "Hold SPACE to boost",
             },
           ],
           scoring:
@@ -205,10 +210,8 @@ const StartScreen: React.FC<StartScreenProps> = ({
           transition={{ duration: 0.8, delay: 1.2 }}
           className="text-sm text-white/50 mt-6"
         >
-          Press{" "}
-          <kbd className="px-2 py-1 bg-white/10 rounded text-xs">SPACE</kbd> or{" "}
-          <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd> to
-          pause during gameplay
+          Press <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd>{" "}
+          to pause during gameplay
         </motion.p>
       </motion.div>
     </motion.div>

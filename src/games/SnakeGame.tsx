@@ -46,6 +46,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
   const [snake, setSnake] = useState<SnakeSegment[]>([{ x: 10, y: 10 }]);
   const [food, setFood] = useState<Food>({ x: 15, y: 15 });
   const [direction, setDirection] = useState<Direction>({ x: 1, y: 0 });
+  const [isBoosting, setIsBoosting] = useState(false);
   // Snake 게임에서는 키 상태를 사용하지 않으므로 제거
 
   const [isNewHighScore, setIsNewHighScore] = useState(false);
@@ -236,10 +237,11 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
   // 게임 루프
   const gameLoop = useCallback(
     (currentTime: number) => {
-      if (
-        currentTime - lastTimeRef.current >=
-        INITIAL_SPEED / stats.gameSpeed
-      ) {
+      // 가속 중일 때는 2배 빠르게
+      const speedMultiplier = isBoosting ? 2 : 1;
+      const speed = INITIAL_SPEED / stats.gameSpeed / speedMultiplier;
+
+      if (currentTime - lastTimeRef.current >= speed) {
         updateGame();
         lastTimeRef.current = currentTime;
       }
@@ -247,7 +249,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
       render();
       animationRef.current = requestAnimationFrame(gameLoop);
     },
-    [updateGame, render, stats.gameSpeed]
+    [updateGame, render, stats.gameSpeed, isBoosting]
   );
 
   // 게임 시작
@@ -257,6 +259,7 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
     setSnake([{ x: 10, y: 10 }]);
     setDirection({ x: 1, y: 0 });
     setFood(generateFood([{ x: 10, y: 10 }]));
+    setIsBoosting(false);
   }, [generateFood]);
 
   // 게임 재시작
@@ -277,9 +280,17 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
   // 키보드 이벤트 처리
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.code === "Space" || e.key === "Escape") {
+      if (e.key === "Escape") {
         e.preventDefault();
         togglePause();
+        return;
+      }
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (gameState === "playing") {
+          setIsBoosting(true);
+        }
         return;
       }
 
@@ -305,6 +316,14 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
     [gameState, direction, togglePause]
   );
 
+  // 키업 이벤트 처리 (가속 해제)
+  const handleKeyUp = useCallback((e: KeyboardEvent) => {
+    if (e.code === "Space") {
+      e.preventDefault();
+      setIsBoosting(false);
+    }
+  }, []);
+
   // 새 최고점수 체크
   useEffect(() => {
     if (gameState === "gameOver" && stats.score > 0) {
@@ -319,13 +338,15 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
   // 이벤트 리스너 등록
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
     window.addEventListener("resize", resizeCanvas);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [handleKeyDown, resizeCanvas]);
+  }, [handleKeyDown, handleKeyUp, resizeCanvas]);
 
   // 게임 루프 시작
   useEffect(() => {
@@ -377,20 +398,22 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
         transition={{ duration: 0.8, type: "spring", damping: 20 }}
         className="relative w-full max-w-4xl aspect-video"
       >
-        {/* 게임 캔버스 */}
-        <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
-
-        {/* 게임 UI (게임 중일 때만) */}
+        {/* 게임 UI (게임 중일 때만) - 캔버스 위쪽에 배치 */}
         <AnimatePresence>
           {(gameState === "playing" || gameState === "paused") && (
-            <GameUI
-              stats={stats}
-              gameState={gameState}
-              onPause={handlePause}
-              onResume={handleResume}
-            />
+            <div className="absolute top-4 left-4 right-4 z-10">
+              <GameUI
+                stats={stats}
+                gameState={gameState}
+                onPause={handlePause}
+                onResume={handleResume}
+              />
+            </div>
           )}
         </AnimatePresence>
+
+        {/* 게임 캔버스 */}
+        <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
 
         {/* 시작 화면 */}
         <AnimatePresence>
@@ -437,14 +460,14 @@ const SnakeGame: React.FC<SnakeGameProps> = ({ onBackToMenu }) => {
       >
         <div className="glass rounded-2xl px-6 py-3 text-center">
           <p className="text-white/70 text-sm">
-            Use{" "}
-            <kbd className="px-2 py-1 bg-white/10 rounded text-xs">SPACE</kbd>{" "}
-            or <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd>{" "}
+            Use <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd>{" "}
             to pause • Use{" "}
             <kbd className="px-2 py-1 bg-white/10 rounded text-xs">
               ARROW KEYS
             </kbd>{" "}
-            to move
+            to move • Hold{" "}
+            <kbd className="px-2 py-1 bg-white/10 rounded text-xs">SPACE</kbd>{" "}
+            to boost
           </p>
         </div>
       </motion.div>

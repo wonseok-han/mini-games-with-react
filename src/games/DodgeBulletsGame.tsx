@@ -73,20 +73,22 @@ const DodgeBulletsGame: React.FC<DodgeBulletsGameProps> = ({
         transition={{ duration: 0.8, type: "spring", damping: 20 }}
         className="relative w-full max-w-6xl aspect-video"
       >
-        {/* 게임 캔버스 */}
-        <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
-
-        {/* 게임 UI (게임 중일 때만) */}
+        {/* 게임 UI (게임 중일 때만) - 캔버스 위쪽에 배치 */}
         <AnimatePresence>
           {(gameState === "playing" || gameState === "paused") && (
-            <GameUI
-              stats={stats}
-              gameState={gameState}
-              onPause={handlePause}
-              onResume={handleResume}
-            />
+            <div className="absolute top-4 left-4 right-4 z-10">
+              <GameUI
+                stats={stats}
+                gameState={gameState}
+                onPause={handlePause}
+                onResume={handleResume}
+              />
+            </div>
           )}
         </AnimatePresence>
+
+        {/* 게임 캔버스 */}
+        <GameCanvas canvasRef={canvasRef} className="w-full h-full" />
 
         {/* 시작 화면 */}
         <AnimatePresence>
@@ -133,9 +135,7 @@ const DodgeBulletsGame: React.FC<DodgeBulletsGameProps> = ({
       >
         <div className="glass rounded-2xl px-6 py-3 text-center">
           <p className="text-white/70 text-sm">
-            Use{" "}
-            <kbd className="px-2 py-1 bg-white/10 rounded text-xs">SPACE</kbd>{" "}
-            or <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd>{" "}
+            Use <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd>{" "}
             to pause • Use{" "}
             <kbd className="px-2 py-1 bg-white/10 rounded text-xs">
               ARROW KEYS

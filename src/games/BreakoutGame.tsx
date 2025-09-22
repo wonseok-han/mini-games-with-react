@@ -219,6 +219,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
       return { ...prevPaddle, x: newX };
     });
 
+    // 공과 벽돌을 함께 업데이트
     setBall((prevBall) => {
       let newBall = { ...prevBall };
 
@@ -229,6 +230,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
         return newBall;
       }
 
+      // 공 위치 업데이트
       newBall.x += newBall.velocityX;
       newBall.y += newBall.velocityY;
 
@@ -256,35 +258,59 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
       if (newBall.y + newBall.radius >= CANVAS_HEIGHT) {
         setGameState("gameOver");
         setIsBallLaunched(false);
+        setKeys({ left: false, right: false }); // 키 상태 초기화
         return prevBall;
       }
 
       return newBall;
     });
 
-    // 벽돌 충돌 체크
+    // 벽돌 충돌 체크 (새로운 공 위치로)
     setBricks((prevBricks) => {
       const newBricks = [...prevBricks];
       let scoreIncrease = 0;
+      let ballHit = false;
+
+      // 새로운 공 위치 계산
+      const newBallX = ball.x + ball.velocityX;
+      const newBallY = ball.y + ball.velocityY;
 
       newBricks.forEach((brick) => {
-        if (checkBrickCollision(ball, brick)) {
-          brick.destroyed = true;
-          scoreIncrease += brick.points;
+        if (!brick.destroyed && !ballHit) {
+          // 임시 공 객체로 충돌 체크
+          const tempBall = {
+            x: newBallX,
+            y: newBallY,
+            radius: ball.radius,
+            velocityX: ball.velocityX,
+            velocityY: ball.velocityY,
+            speed: ball.speed,
+          };
 
-          // 공의 반사 방향 계산
-          const ballCenterX = ball.x;
-          const ballCenterY = ball.y;
-          const brickCenterX = brick.x + brick.width / 2;
-          const brickCenterY = brick.y + brick.height / 2;
+          if (checkBrickCollision(tempBall, brick)) {
+            brick.destroyed = true;
+            scoreIncrease += brick.points;
+            ballHit = true;
 
-          const dx = ballCenterX - brickCenterX;
-          const dy = ballCenterY - brickCenterY;
+            // 공의 반사 방향 계산
+            const ballCenterX = newBallX;
+            const ballCenterY = newBallY;
+            const brickCenterX = brick.x + brick.width / 2;
+            const brickCenterY = brick.y + brick.height / 2;
 
-          if (Math.abs(dx) > Math.abs(dy)) {
-            ball.velocityX = -ball.velocityX;
-          } else {
-            ball.velocityY = -ball.velocityY;
+            const dx = ballCenterX - brickCenterX;
+            const dy = ballCenterY - brickCenterY;
+
+            // 공의 속도 업데이트
+            setBall((prevBall) => {
+              let updatedBall = { ...prevBall };
+              if (Math.abs(dx) > Math.abs(dy)) {
+                updatedBall.velocityX = -updatedBall.velocityX;
+              } else {
+                updatedBall.velocityY = -updatedBall.velocityY;
+              }
+              return updatedBall;
+            });
           }
         }
       });
@@ -379,6 +405,7 @@ const BreakoutGame: React.FC<BreakoutGameProps> = ({ onBackToMenu }) => {
     setGameState("playing");
     setStats((prev) => ({ ...prev, score: 0, gameSpeed: 1, level: 1 }));
     setIsBallLaunched(false);
+    setKeys({ left: false, right: false }); // 키 상태 초기화
     initializeGame();
   }, [initializeGame]);
 

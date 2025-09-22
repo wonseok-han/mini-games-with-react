@@ -46,23 +46,23 @@ const GameMenu: React.FC<GameMenuProps> = ({
       controls: ["화살표 키로 이동/회전", "SPACE로 빠른 낙하"],
     },
     {
-      id: "pong",
-      name: "Pong",
-      description: "AI와 탁구를 치는 클래식 게임",
-      icon: "🏓",
-      color: "from-purple-500 to-violet-500",
-      difficulty: "medium",
-      controls: ["W/S 키로 패들 조종", "SPACE로 일시정지"],
-    },
-    {
       id: "breakout",
       name: "Breakout",
       description: "공으로 벽돌을 깨는 액션 게임",
       icon: "💥",
       color: "from-orange-500 to-yellow-500",
       difficulty: "easy",
-      controls: ["화살표 키로 패들 조종", "SPACE로 일시정지"],
+      controls: ["화살표 키로 패들 조종", "SPACE로 시작"],
     },
+    // {
+    //   id: "pong",
+    //   name: "Pong",
+    //   description: "AI와 탁구를 치는 클래식 게임",
+    //   icon: "🏓",
+    //   color: "from-purple-500 to-violet-500",
+    //   difficulty: "medium",
+    //   controls: ["W/S 키로 패들 조종", "SPACE로 일시정지"],
+    // },
   ];
 
   const getDifficultyColor = (difficulty: string) => {
